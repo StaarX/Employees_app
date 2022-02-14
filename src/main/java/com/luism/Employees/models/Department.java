@@ -14,11 +14,11 @@ public class Department {
 
     private String location;
 
-//    @OneToMany(mappedBy = "department")
+//   @OneToMany(mappedBy = "department")
 //    private List<Employee> employees;
 
     public Department() {
-        this.id = 0L;
+        this.id = -1L;
         this.name = "";
         this.location = "";
     }

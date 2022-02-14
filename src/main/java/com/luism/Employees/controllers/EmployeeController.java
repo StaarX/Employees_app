@@ -15,32 +15,28 @@ import org.springframework.web.bind.annotation.*;
 public class EmployeeController {
     @Autowired
     EmployeeService service;
+
     Logger log=LoggerFactory.getLogger(EmployeeController.class);
+
     @PostMapping("/insert")
     public ResponseEntity insertEmployee(@RequestBody Employee e){
-        if (e.getId()<0) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid employee");
+//        if (e.getDepartment().getId()<0) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid employee, department must be specified");
         Employee em=service.insert(e);
-        if (em==null) return ResponseEntity.status(HttpStatus.CONFLICT).body("Employee could not be added");
         return ResponseEntity.status(HttpStatus.OK).body(em);
     }
     @PutMapping("/update")
     public ResponseEntity updateEmployee(@RequestBody Employee e){
-        if (e.getId()<0) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid employee");
         Employee em=service.update(e);
-        if (em==null) return ResponseEntity.status(HttpStatus.CONFLICT).body("Employee could not be updated");
         return ResponseEntity.status(HttpStatus.OK).body(em);
     }
     @DeleteMapping("/delete")
     public ResponseEntity deleteEmployee(@RequestParam(name = "id", defaultValue = "-1")Long id){
-        if (id<0) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid ID");
-        if (!service.delete(id)) return ResponseEntity.status(HttpStatus.CONFLICT).body("Employee does not exist or cannot be deleted");
+        service.delete(id);
         return ResponseEntity.status(HttpStatus.OK).body("Employee deleted");
     }
     @GetMapping("/employee")
     public ResponseEntity getEmployee(@RequestParam(name = "id", defaultValue = "-1")Long id){
-        if (id<0) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid ID");
         Employee e=service.get(id);
-        if (e==null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Employee could not be found");
         return ResponseEntity.status(HttpStatus.OK).body(e);
     }
     @GetMapping("/employees")

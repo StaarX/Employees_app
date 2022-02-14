@@ -9,11 +9,11 @@ public class Employee {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-
+    @Column
     private String name;
-
+    @Column
     private Double salary;
-
+    @Column
     private String email;
 
 //    @ManyToOne (cascade = CascadeType.ALL)
@@ -32,7 +32,16 @@ public class Employee {
         this.name = name;
         this.salary = salary;
         this.email = email;
+//        this.department=department;
     }
+
+//    public Department getDepartment() {
+//        return department;
+//    }
+//
+//    public void setDepartment(Department department) {
+//        this.department = department;
+//    }
 
     public Long getId() {
         return id;
