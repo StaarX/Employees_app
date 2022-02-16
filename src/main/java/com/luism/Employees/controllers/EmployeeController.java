@@ -29,7 +29,7 @@ public class EmployeeController {
         Employee em=service.insert(e);
         return ResponseEntity.status(HttpStatus.OK).body(em);
     }
-    @PutMapping("/update")
+    @PostMapping("/update")
     public ResponseEntity updateEmployee(@RequestBody(required = false) Employee e){
         Employee em=service.update(e);
         return ResponseEntity.status(HttpStatus.OK).body(em);
