@@ -26,32 +26,33 @@ public class Employee {
     @Column
     private String email;
 
-//    @ManyToOne (cascade = CascadeType.ALL)
-//    @JoinColumn(name="employee_id",referencedColumnName = "id")
-//    private Department department;
+    @ManyToOne
+    @JoinColumn(name="department_id",referencedColumnName = "id",insertable = false,updatable = false)
+    private Department department;
 
     public Employee() {
         this.id = -1L;
         this.salary=-1D;
         this.name="";
         this.email="";
+        this.department=new Department();
     }
 
-    public Employee(Long id, String name, Double salary, String email) {
+    public Employee(Long id, String name, Double salary, String email,Department department) {
         this.id = id;
         this.name = name;
         this.salary = salary;
         this.email = email;
-//        this.department=department;
+        this.department=department;
     }
 
-//    public Department getDepartment() {
-//        return department;
-//    }
-//
-//    public void setDepartment(Department department) {
-//        this.department = department;
-//    }
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+           }
 
     public Long getId() {
         return id;
@@ -84,7 +85,6 @@ public class Employee {
     public void setEmail(String email) {
         this.email = email;
     }
-    
 
     @Override
     public String toString() {
@@ -93,6 +93,7 @@ public class Employee {
                 ", name='" + name + '\'' +
                 ", salary=" + salary +
                 ", email='" + email + '\'' +
+                ", department=" + department +
                 '}';
     }
 }

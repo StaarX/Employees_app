@@ -29,7 +29,7 @@ public class EmployeeControllerTest {
     @Test
     public void validFieldsInsertion() throws Exception{
         insertURL="http://localhost:"+port+"/employee/insert";
-        Employee empIns= new Employee(0L,"Peter Parker",12D,"Peter@gmail.com");
+        Employee empIns= new Employee(0L,"Peter Parker",12D,"Peter@gmail.com",null);
         Employee emp = restTemplate.postForObject(insertURL,empIns, Employee.class);
         Assertions.assertNotNull(emp);
         Assertions.assertTrue(emp.getId()>0);
@@ -38,12 +38,12 @@ public class EmployeeControllerTest {
     public void validFieldsUpdate() throws Exception{
         updateURL="http://localhost:"+port+"/employee/update";
         insertURL="http://localhost:"+port+"/employee/insert";
-        Employee empIns= new Employee(0L,"Peter Parker",12D,"Peter@gmail.com");
+        Employee empIns= new Employee(0L,"Peter Parker",12D,"Peter@gmail.com",null);
         Employee emp = restTemplate.postForObject(insertURL,empIns, Employee.class);
         Assertions.assertNotNull(emp);
         Assertions.assertTrue(emp.getId()>0);
         //Update test
-        Employee empToUpdate = new Employee(emp.getId(),"Parker Peter",16D,"Parker@gmail.com");
+        Employee empToUpdate = new Employee(emp.getId(),"Parker Peter",16D,"Parker@gmail.com",null);
         Employee empUpdated = restTemplate.postForObject(updateURL,empToUpdate, Employee.class);
         Assertions.assertNotNull(empUpdated);
         Assertions.assertTrue(empToUpdate.getId()==empUpdated.getId());
@@ -52,11 +52,16 @@ public class EmployeeControllerTest {
         Assertions.assertTrue(empToUpdate.getEmail().equals(empUpdated.getEmail()));
     }
     @Test
-    public void successfullDelete() throws Exception{
-//        insertURL="http://localhost:"+port+"/employee/insert";
-//        Employee empIns= new Employee(0L,"Peter Parker",12D,"Peter@gmail.com");
-//        Employee emp = restTemplate.postForObject(insertURL,empIns, Employee.class);
-//        Assertions.assertNotNull(emp);
-//        Assertions.assertTrue(emp.getId()>0);
+    public void validFieldsDelete() throws Exception{
+        deleteURL="http://localhost:"+port+"/employee/delete?id=";
+        insertURL="http://localhost:"+port+"/employee/insert";
+        Employee empIns= new Employee(0L,"Peter Parker",12D,"Peter@gmail.com",null);
+        Employee emp = restTemplate.postForObject(insertURL,empIns, Employee.class);
+        Assertions.assertNotNull(emp);
+        Assertions.assertTrue(emp.getId()>0);
+        //Delete test
+        String response=restTemplate.postForObject(deleteURL+emp.getId(),null, String.class);
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals("Employee deleted",response);
     }
 }

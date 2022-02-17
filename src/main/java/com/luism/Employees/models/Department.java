@@ -14,8 +14,8 @@ public class Department {
 
     private String location;
 
-//   @OneToMany(mappedBy = "department")
-//    private List<Employee> employees;
+    @OneToMany(mappedBy = "department")
+    private List<Employee> employees;
 
     public Department() {
         this.id = -1L;
@@ -51,5 +51,23 @@ public class Department {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
+    }
+
+    @Override
+    public String toString() {
+        return "Department{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", location='" + location + '\'' +
+                ", employees=" + employees +
+                '}';
     }
 }

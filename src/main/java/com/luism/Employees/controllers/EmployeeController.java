@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/employee")
@@ -22,30 +23,25 @@ public class EmployeeController {
 
     Logger log=LoggerFactory.getLogger(EmployeeController.class);
 
-    @PostMapping("/insert")
+    @PostMapping
     @Valid
     public ResponseEntity insertEmployee(@RequestBody(required = false) Employee e){
-//        if (e.getDepartment().getId()<0) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid employee, department must be specified");
         Employee em=service.insert(e);
         return ResponseEntity.status(HttpStatus.OK).body(em);
     }
-    @PostMapping("/update")
+    @PutMapping
     public ResponseEntity updateEmployee(@RequestBody(required = false) Employee e){
         Employee em=service.update(e);
         return ResponseEntity.status(HttpStatus.OK).body(em);
     }
-    @DeleteMapping("/delete")
+    @DeleteMapping
     public ResponseEntity deleteEmployee(@RequestParam(name = "id", defaultValue = "-1")Long id){
         service.delete(id);
         return ResponseEntity.status(HttpStatus.OK).body("Employee deleted");
     }
-    @GetMapping("/employee")
-    public ResponseEntity getEmployee(@RequestParam(name = "id", defaultValue = "-1")Long id){
-        Employee e=service.get(id);
-        return ResponseEntity.status(HttpStatus.OK).body(e);
-    }
-    @GetMapping("/employees")
-    public ResponseEntity getEmployees(){
-        return ResponseEntity.status(HttpStatus.OK).body(service.getAll());
+    @GetMapping
+    public ResponseEntity getEmployee(@RequestParam(name = "id", defaultValue = "getAll")String id){
+            List<Employee> e=service.get(id);
+            return ResponseEntity.status(HttpStatus.OK).body(e);
     }
 }
