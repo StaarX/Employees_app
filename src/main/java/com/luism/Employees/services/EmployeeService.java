@@ -7,7 +7,10 @@ import com.luism.Employees.models.Department;
 import com.luism.Employees.models.Employee;
 import com.luism.Employees.repos.DepartmentRepo;
 import com.luism.Employees.repos.EmployeeRepo;
+import com.luism.Employees.validators.EmployeeDTO;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,15 +25,19 @@ public class EmployeeService {
     EmployeeRepo repo;
     @Autowired
     DepartmentRepo dptRepo;
-    public Employee insert(Employee e){
+    @Autowired
+    @Qualifier("modelMapper")
+    ModelMapper modelMapper;
+
+    public Employee insert(EmployeeDTO e){
         if (e==null) throw new InvalidFieldException("Invalid employee, employee cannot be null");
         if (e.getId()!=0) throw new InvalidFieldException("For insertions, ID must be 0.");
         if (e.getDepartment().getId()==-1) e.setDepartment(null);
-        Employee emp=repo.save(e);
+        Employee emp=repo.save(modelMapper.map(e,Employee.class));
         if (emp.getId()<0) throw new InvalidFieldException("Employee could not be added.");
         return emp;
     }
-    public Employee update(Employee e){
+    public Employee update(EmployeeDTO e){
         if (e==null || e.getId()<0) throw new InvalidFieldException("Invalid employee, employee cannot be null and must contain a valid ID.");
         if (!repo.existsById(e.getId())) throw new NoEmployeeFoundException("Employee not found.");
         if (e.getDepartment().getId()>0){
@@ -42,7 +49,7 @@ public class EmployeeService {
         }else{
             e.setDepartment(null);
         }
-        Employee emp=repo.save(e);
+        Employee emp=repo.save(modelMapper.map(e,Employee.class));
         if (emp.getId()<0) throw new InternalException("Employee could not be updated.");
         return emp;
     }

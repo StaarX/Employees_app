@@ -12,17 +12,10 @@ public class Employee {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-
     @Column
-    @NotBlank(message = "Employee name cannot be null nor blank")
-    @Pattern(regexp = Regex.OnlyLetters, message = "Employees name can only contain letters")
-    @Size(min = 4,max=32,message = "Employees name should be between 4 and 32 characters")
     private String name;
-
     @Column
-    @Min(value = 1,message = "Employee salary must be above 1")
     private Double salary;
-    @Email(message = "Employee email not valid")
     @Column
     private String email;
 
