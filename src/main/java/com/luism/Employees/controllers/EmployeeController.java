@@ -2,9 +2,12 @@ package com.luism.Employees.controllers;
 
 import com.luism.Employees.models.Employee;
 import com.luism.Employees.services.EmployeeService;
+import com.luism.Employees.validators.EmployeeDTO;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,7 +19,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/employee")
-@Validated
 public class EmployeeController {
     @Autowired
     EmployeeService service;
@@ -24,13 +26,12 @@ public class EmployeeController {
     Logger log=LoggerFactory.getLogger(EmployeeController.class);
 
     @PostMapping
-    @Valid
-    public ResponseEntity insertEmployee(@RequestBody(required = false) Employee e){
+    public ResponseEntity insertEmployee(@Valid@RequestBody(required = false) EmployeeDTO e){
         Employee em=service.insert(e);
         return ResponseEntity.status(HttpStatus.OK).body(em);
     }
     @PutMapping
-    public ResponseEntity updateEmployee(@RequestBody(required = false) Employee e){
+    public ResponseEntity updateEmployee(@Valid@RequestBody(required = false) EmployeeDTO e){
         Employee em=service.update(e);
         return ResponseEntity.status(HttpStatus.OK).body(em);
     }

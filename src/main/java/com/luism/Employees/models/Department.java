@@ -1,5 +1,7 @@
 package com.luism.Employees.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -14,6 +16,7 @@ public class Department {
 
     private String location;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "department")
     private List<Employee> employees;
 
