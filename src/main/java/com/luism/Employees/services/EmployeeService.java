@@ -40,14 +40,14 @@ public class EmployeeService {
     public Employee update(EmployeeDTO e){
         if (e==null || e.getId()<0) throw new InvalidFieldException("Invalid employee, employee cannot be null and must contain a valid ID.");
         if (!repo.existsById(e.getId())) throw new NoEmployeeFoundException("Employee not found.");
+        if (e.getDepartment()!=null){
         if (e.getDepartment().getId()>0){
            if (dptRepo.findById(e.getDepartment().getId()).isPresent()){
                e.setDepartment(dptRepo.findById(e.getDepartment().getId()).get());
            }else{
                throw new InvalidFieldException("Department could not be found, update failed.");
            }
-        }else{
-            e.setDepartment(null);
+        }
         }
         Employee emp=repo.save(modelMapper.map(e,Employee.class));
         if (emp.getId()<0) throw new InternalException("Employee could not be updated.");
